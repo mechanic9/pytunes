@@ -1,6 +1,7 @@
 ''' Handles all data retrieval '''
 import os
 from lonely import Singleton
+from model import Model
 
 
 
@@ -32,7 +33,7 @@ class Song:
 
 
 @Singleton #Marks Library as a singleton
-class Library:
+class Library(Model):
     def __init__(self):
         self.songs = []
 
@@ -43,11 +44,16 @@ class Library:
             i= i+1
         return True
 
+    def get(self, id):
+        for song in self.songs:
+            if song.get_id() == id:
+                return song
+
 
     def get_songs(self):
         return self.songs
 
-
+    #Checks if library empty or nah
     def check_library(self):
         if self.songs:
             return True

@@ -1,10 +1,19 @@
-from controller.music_controller import controller, help
+from controller.music_controller import MusicController
+from controller.player import Player
+from models.library import Library
+from views.view import ConsoleView
 import sys
 
 def main():
-    help()
+
+    model = Library.Instance()
+    view = ConsoleView()
+    player = Player()
+    controller = MusicController(model, view, player)
+    controller.help(0)
+
     try:
-        controller()
+        controller.control()
     except KeyboardInterrupt:
         sys.exit(0)
 
