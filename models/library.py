@@ -38,7 +38,11 @@ class Library(Model):
         self.songs = []
 
     def load(self, path="/"):
-        i = 1
+        if len(self.songs) == 0:
+            i = 1
+        else:
+            i = len(self.songs) + 1
+
         for fpath, fname in get_mp3files(path):
             self.songs.append(Song(id=i, path=fpath, name=fname))
             i= i+1
