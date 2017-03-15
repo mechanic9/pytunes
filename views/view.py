@@ -1,9 +1,13 @@
 ''' Handles command line interface '''
 from termcolor import cprint, colored
+from lonely import Singleton
+from commands.command import RootCommandParser
 
 
 default_c = 'blue'
+root_parser = RootCommandParser.Instance()
 
+#Abstract Class
 class View:
     def input(self):
         raise NotImplementedError
@@ -14,7 +18,8 @@ class View:
     def help(self):
         raise NotImplementedError
 
-class ConsoleView:
+@Singleton
+class ConsoleView(View):
 
     def __init__(self):
         pass
@@ -30,14 +35,8 @@ class ConsoleView:
     def help(self):
         cprint("======>Welcome to PyTunes<======", 'red')
         cprint("----------CLI Commands----------", 'green')
-        print colored("load 'path'", default_c) + " --> Load songs in 'path' to music player library"
-        print colored("list", default_c) + " --> List all songs in music player "
-        print colored("play id", default_c) + " --> Play song with id"
-        print colored("whatisplaying", default_c) + " --> Show name of song playing"
-        print colored("pause", default_c) + " --> Pause song"
-        print colored("resume", default_c) + " --> Resume paused song"
-        print colored("stop", default_c) + " --> stop playing"
-        print colored("help", default_c) + " --> This message"
+        for msg in root_parser.get_help():
+            print colored(msg['name'] + ' ' + msg['arg'], default_c) + ' ' + msg['bind'] + ' ' + msg['help']
 
     def error(self, msg):
         cprint("===> " + msg, 'red')
